@@ -12,13 +12,7 @@ if (inputedLimit == null) {
 String color = request.getParameter("color");
 int dan = Integer.parseInt(inputedDan);
 int limit = Integer.parseInt(inputedLimit);
-//for(Map<String, Object> articleMap : articleRows) {
-//int id = (int)articleMap.get("id");
-//LocalDateTime regDate = (LocalDateTime)articleMap.get("regDate");
-//String title = (String)articleMap.get("title");
-//String body = (String)articleMap.get("body");
-//response.getWriter().append(String.format(" %d |  %s|  %s  |   %s", id, regDate, title,body));				
-//}
+
 %>
 <!DOCTYPE html>
 <html>
