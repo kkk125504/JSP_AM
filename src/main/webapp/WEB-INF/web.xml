@@ -39,4 +39,14 @@
     <servlet-name>asdfasdf</servlet-name>
     <url-pattern>/asdfasdf</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>MainPageServlet</display-name>
+    <servlet-name>MainPageServlet</servlet-name>
+    <servlet-class>com.KoreaIT.Java.AM.servlet.MainPageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>MainPageServlet</servlet-name>
+    <url-pattern>/MainPageServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
