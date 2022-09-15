@@ -18,7 +18,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 
-
 @WebServlet("/article/list")
 public class ArticleListServlet extends HttpServlet {
 
@@ -26,7 +25,13 @@ public class ArticleListServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		response.setContentType("text/html; charset=UTF-8");
-
+		int page = 1;
+		if(request.getParameter("page") != null) {
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+		int itemsInAPage = 10;
+		int limitFrom = (page-1) * itemsInAPage ;
+		int limitTake = itemsInAPage;
 		// DB 연결
 		String url = "jdbc:mysql://127.0.0.1:3306/JSPTest?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 		String user = "root";
@@ -50,10 +55,17 @@ public class ArticleListServlet extends HttpServlet {
 			SecSql sql = SecSql.from("SELECT *");
 			sql.append("FROM article");
 			sql.append("ORDER BY id DESC");		
+			sql.append("LIMIT ?,?", limitFrom,limitTake);		
 						
 			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
+			sql = new SecSql();
+			sql.append("SELECT COUNT(*) FROM article");
+			int totalCount = DBUtil.selectRowIntValue(conn, sql);
+			int totalPage = (int)Math.ceil(((double)totalCount/itemsInAPage));
 			
 			request.setAttribute("articleRows",articleRows);
+			request.setAttribute("totalPage",totalPage);
+			request.setAttribute("page",page);
 			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 
 		} catch (SQLException e) {
