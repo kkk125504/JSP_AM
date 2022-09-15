@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.KoreaIT.Java.AM.util.DBUtil;
+import com.KoreaIT.Java.AM.util.SecSql;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -45,8 +47,9 @@ public class ArticleListServlet extends HttpServlet {
 
 		try {
 			conn = DriverManager.getConnection(url, user, password);
-			
-			String sql = "SELECT * FROM article ORDER BY id DESC";
+			SecSql sql = SecSql.from("SELECT *");
+			sql.append("FROM article");
+			sql.append("ORDER BY id DESC");		
 						
 			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
 			
