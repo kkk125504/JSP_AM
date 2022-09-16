@@ -13,6 +13,7 @@ public class SecSql {
 
 	@Override
 	public String toString() {
+		System.out.println(datas);
 		return "sql=" + getFormat() + ", data=" + datas;
 	}
 

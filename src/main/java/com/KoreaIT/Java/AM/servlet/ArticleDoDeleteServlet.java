@@ -52,7 +52,8 @@ public class ArticleDoDeleteServlet extends HttpServlet {
 
 			DBUtil.delete(conn, sql);
 
-			response.getWriter().append(String.format("<script>alert('%d번 글이 삭제 되었습니다.'); location.replace('list');</script>", id));
+			response.getWriter()
+					.append(String.format("<script>alert('%d번 글이 삭제 되었습니다.'); location.replace('list');</script>", id));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -67,4 +68,9 @@ public class ArticleDoDeleteServlet extends HttpServlet {
 		}
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 }
