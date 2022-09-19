@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import com.KoreaIT.Java.AM.config.Config;
 import com.KoreaIT.Java.AM.util.DBUtil;
 import com.KoreaIT.Java.AM.util.SecSql;
 
@@ -23,23 +24,12 @@ public class ArticleListServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		response.setContentType("text/html; charset=UTF-8");
-		int page = 1;
-		if (request.getParameter("page") != null) {
-			page = Integer.parseInt(request.getParameter("page"));
-		}
-		int itemsInAPage = 10;
-		int limitFrom = (page - 1) * itemsInAPage;
-		int limitTake = itemsInAPage;
-		// DB 연결
-		String url = "jdbc:mysql://127.0.0.1:3306/JSPTest?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
-		String user = "root";
-		String password = "";
+		response.setContentType("text/html; charset=UTF-8");		
 
 		Connection conn = null;
-
-		String driverName = "com.mysql.jdbc.Driver";
-
+		
+		String driverName = Config.getDBDriverClassName();
+		
 		try {
 			Class.forName(driverName);
 
@@ -50,7 +40,16 @@ public class ArticleListServlet extends HttpServlet {
 		}
 
 		try {
-			conn = DriverManager.getConnection(url, user, password);
+			conn = DriverManager.getConnection(Config.getDBUrl(),Config.getDBUser(),Config.getDBPassword());
+			
+			int page = 1;
+			if (request.getParameter("page") != null && request.getParameter("page").length() != 0) {
+				page = Integer.parseInt(request.getParameter("page"));
+			}
+			int itemsInAPage = 10;
+			int limitFrom = (page - 1) * itemsInAPage;
+			int limitTake = itemsInAPage;
+			
 			SecSql sql = SecSql.from("SELECT *");
 			sql.append("FROM article");
 			sql.append("ORDER BY id DESC");
