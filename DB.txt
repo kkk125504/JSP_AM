@@ -11,15 +11,50 @@ CREATE TABLE article(
     `body` TEXT NOT NULL
 );
 
+# 회원 테이블 생성
+CREATE TABLE `member`(
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    loginId CHAR(100) NOT NULL UNIQUE,
+    loginPw CHAR(100) NOT NULL,
+    `name` CHAR(100) NOT NULL
+);
+
 # 게시글 테스트데이터 생성
 INSERT INTO article 
 SET regDate = NOW(),
 title = CONCAT('제목__', RAND()),
 `body` = CONCAT('내용__', RAND());
 
+# 회원 테스트데이터 생성
+INSERT INTO `member` 
+SET regDate = NOW(),
+loginId = 'test1',
+`loginPw` = 'test1',
+`name` = '유저1';
+
+INSERT INTO `member` 
+SET regDate = NOW(),
+loginId = 'test2',
+`loginPw` = 'test2',
+`name` = '유저2';
+
+INSERT INTO `member` 
+SET regDate = NOW(),
+loginId = 'test3',
+`loginPw` = 'test3',
+`name` = '유저3';
+
+ALTER TABLE `article` ADD COLUMN memberId INT(10) UNSIGNED NOT NULL AFTER regDate;
+
+UPDATE article SET memberId = 2 WHERE memberId = 0;
+
 SELECT * FROM article;
+SELECT * FROM `member`;
 
 SELECT * FROM article ORDER BY id DESC;
+
+INSERT INTO `member` SET regDate = NOW() , loginId = 'test1' , loginPw = 'test1' , `name` = 'test1';
 
 -- INSERT INTO article (regDate, title, `body`)
 -- SELECT NOW(), CONCAT('제목_', RAND()), CONCAT('내용_', RAND())
@@ -44,3 +79,7 @@ SELECT * FROM article ORDER BY id DESC;
 -- SET regDate = NOW(),
 -- title = '제목4',
 -- `body` = '내용4';
+
+-- SELECT * FROM article ORDER BY id DESC LIMIT 0, 10;
+
+# articleRows.get(0).get("title")
