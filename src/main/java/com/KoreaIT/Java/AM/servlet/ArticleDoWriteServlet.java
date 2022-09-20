@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.KoreaIT.Java.AM.config.Config;
+import com.KoreaIT.Java.AM.exception.SQLErrorException;
 import com.KoreaIT.Java.AM.util.DBUtil;
 import com.KoreaIT.Java.AM.util.SecSql;
 
@@ -27,9 +28,9 @@ public class ArticleDoWriteServlet extends HttpServlet {
 
 		// DB 연결
 		Connection conn = null;
-		
+
 		String driverName = Config.getDBDriverClassName();
-		
+
 		try {
 			Class.forName(driverName);
 
@@ -40,7 +41,7 @@ public class ArticleDoWriteServlet extends HttpServlet {
 		}
 
 		try {
-			conn = DriverManager.getConnection(Config.getDBUrl(),Config.getDBUser(),Config.getDBPassword());
+			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(), Config.getDBPassword());
 
 			String title = request.getParameter("title");
 			String body = request.getParameter("body");
@@ -51,11 +52,13 @@ public class ArticleDoWriteServlet extends HttpServlet {
 			sql.append(", `body` = ?", body);
 
 			int id = DBUtil.insert(conn, sql);
-			response.getWriter().append(String
-					.format("<script>alert('%d번 글이 작성 되었습니다.'); location.replace('list');</script>", id));
+			response.getWriter()
+					.append(String.format("<script>alert('%d번 글이 작성 되었습니다.'); location.replace('list');</script>", id));
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (SQLErrorException e) {
+			e.getOrigin().printStackTrace();
 		} finally {
 			try {
 				if (conn != null && !conn.isClosed()) {

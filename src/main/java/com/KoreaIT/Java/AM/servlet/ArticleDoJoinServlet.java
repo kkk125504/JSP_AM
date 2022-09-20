@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.KoreaIT.Java.AM.config.Config;
+import com.KoreaIT.Java.AM.exception.SQLErrorException;
 import com.KoreaIT.Java.AM.util.DBUtil;
 import com.KoreaIT.Java.AM.util.SecSql;
 
@@ -27,9 +28,9 @@ public class ArticleDoJoinServlet extends HttpServlet {
 
 		// DB 연결
 		Connection conn = null;
-		
+
 		String driverName = Config.getDBDriverClassName();
-		
+
 		try {
 			Class.forName(driverName);
 
@@ -40,13 +41,23 @@ public class ArticleDoJoinServlet extends HttpServlet {
 		}
 
 		try {
-			conn = DriverManager.getConnection(Config.getDBUrl(),Config.getDBUser(),Config.getDBPassword());
+			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(), Config.getDBPassword());
 
 			String loginId = request.getParameter("loginId");
 			String loginPw = request.getParameter("loginPw");
 			String name = request.getParameter("name");
 
-			SecSql sql = SecSql.from("INSERT INTO `member`");
+			SecSql sql = SecSql.from("SELECT COUNT(*) FROM `member`");
+			sql.append("WHERE loginId = ?", loginId);
+			boolean isJoinAvailableLoginId = DBUtil.selectRowIntValue(conn, sql) == 0;
+
+			if (isJoinAvailableLoginId == false) {
+				response.getWriter()
+						.append(String.format("<script>alert('이미 사용중인 아이디입니다.'); location.replace('join');</script>"));
+				return;
+			}
+
+			sql = SecSql.from("INSERT INTO `member`");
 			sql.append("SET regDate = NOW()");
 			sql.append(", loginId = ?", loginId);
 			sql.append(", loginPw = ?", loginPw);
@@ -58,6 +69,8 @@ public class ArticleDoJoinServlet extends HttpServlet {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (SQLErrorException e) {
+			e.getOrigin().printStackTrace();
 		} finally {
 			try {
 				if (conn != null && !conn.isClosed()) {

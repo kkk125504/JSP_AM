@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import com.KoreaIT.Java.AM.config.Config;
+import com.KoreaIT.Java.AM.exception.SQLErrorException;
 import com.KoreaIT.Java.AM.util.DBUtil;
 import com.KoreaIT.Java.AM.util.SecSql;
 
@@ -25,9 +26,9 @@ public class ArticleDetailServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 
 		Connection conn = null;
-		
+
 		String driverName = Config.getDBDriverClassName();
-		
+
 		try {
 			Class.forName(driverName);
 
@@ -38,7 +39,7 @@ public class ArticleDetailServlet extends HttpServlet {
 		}
 
 		try {
-			conn = DriverManager.getConnection(Config.getDBUrl(),Config.getDBUser(),Config.getDBPassword());
+			conn = DriverManager.getConnection(Config.getDBUrl(), Config.getDBUser(), Config.getDBPassword());
 
 			int id = Integer.parseInt(request.getParameter("id"));
 
@@ -53,6 +54,8 @@ public class ArticleDetailServlet extends HttpServlet {
 
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} catch (SQLErrorException e) {
+			e.getOrigin().printStackTrace();
 		} finally {
 			try {
 				if (conn != null && !conn.isClosed()) {
