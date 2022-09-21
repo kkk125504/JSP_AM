@@ -54,7 +54,7 @@ public class MemberDoLoginServlet extends HttpServlet {
 
 			if (memberRow.isEmpty()) {
 				response.getWriter()
-						.append("<script>alert('해당하는 아이디를 찾을수 없습니다.'); location.replace('login');</script>");
+						.append("<script>alert('일치하는 아이디를 찾을수 없습니다.'); location.replace('login');</script>");
 				return;
 			}
 			if(memberRow.get("loginPw").equals(loginPw)==false) {

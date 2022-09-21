@@ -16,6 +16,9 @@ int totalPage = (int) request.getAttribute("totalPage");
 </head>
 <body>
 	<h1>게시물 리스트</h1>
+	
+	<%@ include file="/jsp/part/topBar.jspf" %>
+	
 	<div>
 		<a href="write">게시글 작성</a>
 	</div>

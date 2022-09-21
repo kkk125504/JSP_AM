@@ -33,7 +33,6 @@ public class ArticleDoDeleteServlet extends HttpServlet {
 			return;
 		}
 				
-		int loginedMemberId = (int)session.getAttribute("loginedMemberId");
 		// DB 연결
 		Connection conn = null;
 
@@ -57,6 +56,7 @@ public class ArticleDoDeleteServlet extends HttpServlet {
 			sql.append("FROM article");
 			sql.append("WHERE id = ?", id);
 			
+			int loginedMemberId = (int)session.getAttribute("loginedMemberId");
 			int MemberIdByArticle = DBUtil.selectRowIntValue(conn, sql);
 			
 			if(loginedMemberId != MemberIdByArticle ) {
