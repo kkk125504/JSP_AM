@@ -1,8 +1,8 @@
-### Article Dto 도입
+package com.KoreaIT.Java.AM.dto;
 
-**1\) Article**
+import java.time.LocalDateTime;
+import java.util.Map;
 
-```java
 public class Article {
 	public int id;
 	public LocalDateTime regDate;
@@ -23,21 +23,3 @@ public class Article {
 		}
 	}
 }
-```
-
-- Dao를 통해 DB에서 가져온 Map타입을 받을수 있게 생성자를 구현 
-
-**2\) ArticleDao**
-
-```java
-	List<Map<String,Object>> articleRows = DBUtil.selectRows(conn, sql);
-	
-	List<Article> articles = new ArrayList<>();
-	for(Map<String,Object> articleRow : articleRows) {
-		articles.add(new Article(articleRow));
-	}
-	return articles;
-```
-
-- Dto는 Article클래스 이므로
-- DB에서 가져온 데이터를 ```List<Map>```을 ```ArrayList<Article>```로 정제

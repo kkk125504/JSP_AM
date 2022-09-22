@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.KoreaIT.Java.AM.dao.ArticleDao;
+import com.KoreaIT.Java.AM.dto.Article;
 
 public class ArticleService {
 	private ArticleDao articleDao;
@@ -15,13 +16,13 @@ public class ArticleService {
 		return 10;
 	}
 	
-	public List<Map<String, Object>> getForPrintArticleRows(int page) {
+	public List<Article> getForPrintArticles(int page) {
 		int itemsInAPage = getItemsInAPage();
 		int limitFrom = (page - 1) * itemsInAPage;
 		
-		List<Map<String, Object>> articleRows = articleDao.getArticleRows(limitFrom, itemsInAPage);
+		List<Article> articles = articleDao.getArticles(limitFrom, itemsInAPage);
 		
-		return articleRows;
+		return articles;
 	}
 	public int getForPrintListTotalPage() {
 		int itemsInAPage = getItemsInAPage();

@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
+import com.KoreaIT.Java.AM.dto.Article;
 import com.KoreaIT.Java.AM.service.ArticleService;
 import com.KoreaIT.Java.AM.util.DBUtil;
 import com.KoreaIT.Java.AM.util.SecSql;
@@ -28,11 +29,11 @@ public class ArticleController {
 		if (request.getParameter("page") != null && request.getParameter("page").length() != 0) {
 			page = Integer.parseInt(request.getParameter("page"));
 		}					
-		List<Map<String, Object>> articleRows = articleService.getForPrintArticleRows(page);
+		List<Article> articles = articleService.getForPrintArticles(page);
 	
 		int totalPage = articleService.getForPrintListTotalPage();
 		
-		request.setAttribute("articleRows", articleRows);
+		request.setAttribute("articles", articles);
 		request.setAttribute("totalPage", totalPage);
 		request.setAttribute("page", page);
 		

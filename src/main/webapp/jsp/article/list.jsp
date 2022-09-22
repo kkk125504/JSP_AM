@@ -1,10 +1,10 @@
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
+<%@ page import="com.KoreaIT.Java.AM.dto.Article" %>
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
+List<Article> articles = (List<Article>) request.getAttribute("articles");
 int cPage = (int) request.getAttribute("page");
 int totalPage = (int) request.getAttribute("totalPage");
 %>
@@ -37,15 +37,15 @@ int totalPage = (int) request.getAttribute("totalPage");
 		</tr>
 
 		<%
-		for (Map<String, Object> articleRow : articleRows) {
+		for (Article article : articles) {
 		%>
 		<tr>
-			<td><%=articleRow.get("id")%></td>
-			<td><%=articleRow.get("regDate")%></td>
-			<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></a></td>
-			<td><%=articleRow.get("writer__name")%></td>
-			<td><a href="modify?id=<%=articleRow.get("id")%>">수정</a></td>
-			<td><a href="doDelete?id=<%=articleRow.get("id")%>">삭제</a></td>
+			<td><%=article.id%></td>
+			<td><%=article.regDate%></td>
+			<td><a href="detail?id=<%=article.id%>"><%=article.title%></a></td>
+			<td><%=article.writer__name%></td>
+			<td><a href="modify?id=<%=article.id%>">수정</a></td>
+			<td><a href="doDelete?id=<%=article.id%>">삭제</a></td>
 		</tr>
 		<%
 		}
